@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import * as THREE from "three";
 import { AreaChart,Area,BarChart,Bar,LineChart,Line,XAxis,YAxis,CartesianGrid,Tooltip,ResponsiveContainer,Legend,RadarChart,Radar,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Cell } from "recharts";
-import { Network,Zap,Eye,TrendingUp,Clock,Shield,ArrowRight,ArrowUpRight,Key,Terminal,Globe2,Code2,RefreshCw,Activity,Users,MessageSquare,LayoutGrid,Sparkles } from "lucide-react";
+import { Network,Zap,Eye,TrendingUp,Clock,Shield,ArrowRight,ArrowUpRight,Key,Terminal,Globe2,Code2,RefreshCw,Activity,Users,MessageSquare,LayoutGrid,Sparkles,Menu } from "lucide-react";
 
 // ══════════════════════════════════════════════════════════
 // DESIGN SYSTEM — clean, professional dark theme
@@ -2449,6 +2449,25 @@ function Dashboard({onHome}){
 // LANDING PAGE
 // ══════════════════════════════════════════════════════════
 function Landing({onDashboard}){
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    {l:"Features",     h:"#features"},
+    {l:"Globe",        h:"#globe"},
+    {l:"Intelligence", h:"#intelligence"},
+  ];
+
+  const TelegramIcon = ({size=16}) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.05 2.265 1.696 10.082c-1.389.557-1.381 1.331-.254 1.677l5.224 1.629 12.087-7.625c.572-.348 1.094-.16.665.221l-9.79 8.836-.378 5.65c.55 0 .793-.252 1.102-.55l2.65-2.578 5.518 4.077c1.017.561 1.748.272 2.001-.943L23.95 4.077c.371-1.488-.567-2.162-1.9-1.812Z"/>
+    </svg>
+  );
+  const XIcon = ({size=15}) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+
   return (
     <div style={{position:"relative", zIndex:1}}>
       {/* Top nav */}
@@ -2457,25 +2476,23 @@ function Landing({onDashboard}){
         background:"rgba(7,8,12,0.7)",
         backdropFilter:"blur(20px)",
         borderBottom:`1px solid ${T.border}`,
-        padding:"14px 32px"
+        padding:"14px 20px"
       }}>
         <div style={{
           display:"flex", alignItems:"center", justifyContent:"space-between",
-          maxWidth:1440, margin:"0 auto"
+          maxWidth:1440, margin:"0 auto", gap:12
         }}>
-          <div style={{display:"flex", alignItems:"center", gap:11}}>
+          <div style={{display:"flex", alignItems:"center", gap:11, flexShrink:0}}>
             <Logo size={30}/>
             <div style={{
               color:T.text, fontWeight:600, letterSpacing:".18em",
               fontSize:15, fontFamily:FF
             }}>MOLTGRAPH</div>
           </div>
-          <div style={{display:"flex", alignItems:"center", gap:6}}>
-            {[
-              {l:"Features",     h:"#features"},
-              {l:"Globe",        h:"#globe"},
-              {l:"Intelligence", h:"#intelligence"},
-            ].map(li=>(
+
+          {/* Desktop nav */}
+          <div className="nav-desktop" style={{display:"flex", alignItems:"center", gap:6}}>
+            {navLinks.map(li=>(
               <a key={li.l} href={li.h} style={{
                 color:T.dim, textDecoration:"none", fontSize:13,
                 fontWeight:500, padding:"7px 14px", borderRadius:6,
@@ -2483,33 +2500,18 @@ function Landing({onDashboard}){
               }} onMouseEnter={e=>e.target.style.color=T.text}
                  onMouseLeave={e=>e.target.style.color=T.dim}>{li.l}</a>
             ))}
-            {/* Social links */}
             <div style={{display:"flex", alignItems:"center", gap:4, marginLeft:6, paddingLeft:10, borderLeft:`1px solid ${T.border}`}}>
-              <a href="https://t.me/moltgraph" target="_blank" rel="noopener noreferrer"
-                title="Telegram"
-                style={{
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  width:34, height:34, borderRadius:8,
-                  color:T.dim, transition:"color .15s, background .15s"
-                }}
+              <a href="https://t.me/moltgraph" target="_blank" rel="noopener noreferrer" title="Telegram"
+                style={{display:"flex", alignItems:"center", justifyContent:"center", width:34, height:34, borderRadius:8, color:T.dim, transition:"color .15s, background .15s"}}
                 onMouseEnter={e=>{e.currentTarget.style.color=T.primaryHi; e.currentTarget.style.background=T.card;}}
                 onMouseLeave={e=>{e.currentTarget.style.color=T.dim; e.currentTarget.style.background="transparent";}}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M22.05 2.265 1.696 10.082c-1.389.557-1.381 1.331-.254 1.677l5.224 1.629 12.087-7.625c.572-.348 1.094-.16.665.221l-9.79 8.836-.378 5.65c.55 0 .793-.252 1.102-.55l2.65-2.578 5.518 4.077c1.017.561 1.748.272 2.001-.943L23.95 4.077c.371-1.488-.567-2.162-1.9-1.812Z"/>
-                </svg>
+                <TelegramIcon size={16}/>
               </a>
-              <a href="https://x.com/moltgraph" target="_blank" rel="noopener noreferrer"
-                title="X (Twitter)"
-                style={{
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  width:34, height:34, borderRadius:8,
-                  color:T.dim, transition:"color .15s, background .15s"
-                }}
+              <a href="https://x.com/moltgraph" target="_blank" rel="noopener noreferrer" title="X"
+                style={{display:"flex", alignItems:"center", justifyContent:"center", width:34, height:34, borderRadius:8, color:T.dim, transition:"color .15s, background .15s"}}
                 onMouseEnter={e=>{e.currentTarget.style.color=T.text; e.currentTarget.style.background=T.card;}}
                 onMouseLeave={e=>{e.currentTarget.style.color=T.dim; e.currentTarget.style.background="transparent";}}>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
+                <XIcon size={15}/>
               </a>
             </div>
             <button onClick={onDashboard} style={{
@@ -2528,8 +2530,101 @@ function Landing({onDashboard}){
               Open Dashboard →
             </button>
           </div>
+
+          {/* Mobile hamburger */}
+          <button className="nav-mobile-toggle" onClick={()=>setMobileMenuOpen(true)}
+            aria-label="Open menu"
+            style={{
+              display:"none", background:T.card, border:`1px solid ${T.border}`,
+              color:T.text, borderRadius:8, padding:8, cursor:"pointer",
+              alignItems:"center", justifyContent:"center"
+            }}>
+            <Menu size={20} strokeWidth={2}/>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div style={{
+          position:"fixed", inset:0, zIndex:100,
+          background:"rgba(7,8,12,0.96)", backdropFilter:"blur(28px)",
+          display:"flex", flexDirection:"column",
+          animation:"fadeIn .15s ease-out"
+        }}>
+          {/* Top bar with logo + close */}
+          <div style={{
+            display:"flex", alignItems:"center", justifyContent:"space-between",
+            padding:"14px 20px", borderBottom:`1px solid ${T.border}`
+          }}>
+            <div style={{display:"flex", alignItems:"center", gap:11}}>
+              <Logo size={30}/>
+              <div style={{color:T.text, fontWeight:600, letterSpacing:".18em", fontSize:15, fontFamily:FF}}>MOLTGRAPH</div>
+            </div>
+            <button onClick={()=>setMobileMenuOpen(false)} aria-label="Close menu"
+              style={{
+                background:T.card, border:`1px solid ${T.border}`,
+                color:T.text, borderRadius:8, padding:8, cursor:"pointer",
+                display:"flex", alignItems:"center", justifyContent:"center", fontFamily:FF
+              }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Menu content */}
+          <div style={{
+            flex:1, display:"flex", flexDirection:"column",
+            padding:"32px 24px", gap:4
+          }}>
+            {navLinks.map(li=>(
+              <a key={li.l} href={li.h}
+                onClick={()=>setMobileMenuOpen(false)}
+                style={{
+                  color:T.text, textDecoration:"none", fontSize:22,
+                  fontWeight:500, padding:"16px 4px", fontFamily:FF,
+                  borderBottom:`1px solid ${T.border}`, letterSpacing:"-0.01em"
+                }}>{li.l}</a>
+            ))}
+
+            <button onClick={()=>{setMobileMenuOpen(false); onDashboard();}} style={{
+              background:T.primary, border:"none", borderRadius:10,
+              padding:"16px 24px", fontSize:15, fontWeight:600, color:"#fff",
+              cursor:"pointer", fontFamily:FF, marginTop:28,
+              display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+              boxShadow:`0 2px 20px ${T.primaryRing}`
+            }}>
+              Open Dashboard <ArrowRight size={17} strokeWidth={2}/>
+            </button>
+
+            <div style={{
+              display:"flex", gap:10, marginTop:24,
+              paddingTop:24, borderTop:`1px solid ${T.border}`
+            }}>
+              <a href="https://t.me/moltgraph" target="_blank" rel="noopener noreferrer"
+                style={{
+                  flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                  background:T.card, border:`1px solid ${T.border}`,
+                  color:T.text, padding:"14px", borderRadius:10, textDecoration:"none",
+                  fontSize:14, fontWeight:500, fontFamily:FF
+                }}>
+                <TelegramIcon size={18}/> Telegram
+              </a>
+              <a href="https://x.com/moltgraph" target="_blank" rel="noopener noreferrer"
+                style={{
+                  flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8,
+                  background:T.card, border:`1px solid ${T.border}`,
+                  color:T.text, padding:"14px", borderRadius:10, textDecoration:"none",
+                  fontSize:14, fontWeight:500, fontFamily:FF
+                }}>
+                <XIcon size={16}/> X
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero */}
       <section style={{
@@ -2880,10 +2975,13 @@ export default function App(){
         ::-webkit-scrollbar-thumb{background:rgba(43,95,255,0.25);border-radius:3px}
         ::-webkit-scrollbar-thumb:hover{background:rgba(43,95,255,0.4)}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.85)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         button{font-family:${FF}}
         input{font-family:${FF}}
         @media (max-width: 820px){
           .globe-grid{grid-template-columns:1fr !important}
+          .nav-desktop{display:none !important}
+          .nav-mobile-toggle{display:flex !important}
         }
       `}</style>
       <GridBackground/>
