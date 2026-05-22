@@ -2475,7 +2475,6 @@ function Landing({onDashboard}){
               {l:"Features",     h:"#features"},
               {l:"Globe",        h:"#globe"},
               {l:"Intelligence", h:"#intelligence"},
-              {l:"Docs",         h:"#docs"},
             ].map(li=>(
               <a key={li.l} href={li.h} style={{
                 color:T.dim, textDecoration:"none", fontSize:13,
@@ -2484,6 +2483,35 @@ function Landing({onDashboard}){
               }} onMouseEnter={e=>e.target.style.color=T.text}
                  onMouseLeave={e=>e.target.style.color=T.dim}>{li.l}</a>
             ))}
+            {/* Social links */}
+            <div style={{display:"flex", alignItems:"center", gap:4, marginLeft:6, paddingLeft:10, borderLeft:`1px solid ${T.border}`}}>
+              <a href="https://t.me/moltgraph" target="_blank" rel="noopener noreferrer"
+                title="Telegram"
+                style={{
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  width:34, height:34, borderRadius:8,
+                  color:T.dim, transition:"color .15s, background .15s"
+                }}
+                onMouseEnter={e=>{e.currentTarget.style.color=T.primaryHi; e.currentTarget.style.background=T.card;}}
+                onMouseLeave={e=>{e.currentTarget.style.color=T.dim; e.currentTarget.style.background="transparent";}}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22.05 2.265 1.696 10.082c-1.389.557-1.381 1.331-.254 1.677l5.224 1.629 12.087-7.625c.572-.348 1.094-.16.665.221l-9.79 8.836-.378 5.65c.55 0 .793-.252 1.102-.55l2.65-2.578 5.518 4.077c1.017.561 1.748.272 2.001-.943L23.95 4.077c.371-1.488-.567-2.162-1.9-1.812Z"/>
+                </svg>
+              </a>
+              <a href="https://x.com/moltgraph" target="_blank" rel="noopener noreferrer"
+                title="X (Twitter)"
+                style={{
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  width:34, height:34, borderRadius:8,
+                  color:T.dim, transition:"color .15s, background .15s"
+                }}
+                onMouseEnter={e=>{e.currentTarget.style.color=T.text; e.currentTarget.style.background=T.card;}}
+                onMouseLeave={e=>{e.currentTarget.style.color=T.dim; e.currentTarget.style.background="transparent";}}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </a>
+            </div>
             <button onClick={onDashboard} style={{
               background:T.primary, border:"none", borderRadius:8,
               padding:"9px 18px", fontSize:13, fontWeight:600, color:"#fff",
@@ -2526,11 +2554,7 @@ function Landing({onDashboard}){
             lineHeight:1.02, marginBottom:24
           }}>
             The intelligence layer<br/>
-            <span style={{
-              background:`linear-gradient(135deg, ${T.primaryHi} 0%, ${T.accent2} 100%)`,
-              WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-              backgroundClip:"text"
-            }}>for agent-native networks</span>
+            <span style={{color:T.text}}>for agent-native networks</span>
           </h1>
           <p style={{
             color:T.dim, fontSize:"clamp(15px, 1.4vw, 19px)",
@@ -2824,7 +2848,7 @@ function Landing({onDashboard}){
             </div>
           </div>
           <div style={{display:"flex", gap:20, fontSize:12.5}}>
-            {["Privacy","Terms","Contact","Docs"].map(l=>(
+            {["Privacy","Terms"].map(l=>(
               <a key={l} href="#" style={{color:T.muted, textDecoration:"none", fontFamily:FF}}
                  onMouseEnter={e=>e.target.style.color=T.text}
                  onMouseLeave={e=>e.target.style.color=T.muted}>{l}</a>
