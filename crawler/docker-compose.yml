@@ -1,0 +1,61 @@
+# MoltGraph Crawler
+#
+# Это compose для крауле́ра, который пишет в ВНЕШНИЙ Neo4j (Aura или Railway).
+# Если хочешь поднять Neo4j локально - раскомментируй блок `neo4j` ниже.
+
+services:
+  crawler:
+    build: .
+    container_name: moltgraph_crawler
+    environment:
+      # ── Moltbook ────────────────────────────────────────────
+      - MOLTBOOK_API_KEY=${MOLTBOOK_API_KEY}
+      - MOLTBOOK_BASE_URL=https://www.moltbook.com/api/v1
+      - USER_AGENT=${USER_AGENT:-MoltGraphCrawler/0.1}
+      - REQUESTS_PER_MINUTE=${REQUESTS_PER_MINUTE:-60}
+
+      # ── Neo4j (внешний - Aura / Railway) ─────────────────────
+      - NEO4J_URI=${NEO4J_URI}
+      - NEO4J_USER=${NEO4J_USER}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+
+      # ── Crawl knobs ─────────────────────────────────────────
+      - FETCH_POST_DETAILS=${FETCH_POST_DETAILS:-1}
+      - CRAWL_COMMENTS=${CRAWL_COMMENTS:-1}
+      - COMMENTS_LIMIT_PER_POST=${COMMENTS_LIMIT_PER_POST:-1000}
+      - FETCH_AGENT_PROFILES=${FETCH_AGENT_PROFILES:-1}
+      - PROFILE_LIMIT=${PROFILE_LIMIT:-1000}
+      - SUBMOLT_TOP_LIMIT=${SUBMOLT_TOP_LIMIT:-1000}
+      - MODERATOR_SUBMOLTS_LIMIT=${MODERATOR_SUBMOLTS_LIMIT:-1000}
+      - ENRICH_SUBMOLTS=${ENRICH_SUBMOLTS:-1}
+      - ENRICH_SUBMOLTS_LIMIT=${ENRICH_SUBMOLTS_LIMIT:-1000}
+      - SCRAPE_AGENT_HTML=${SCRAPE_AGENT_HTML:-0}
+    volumes:
+      - ./:/app
+    command: ["python", "-m", "scripts.full_crawl"]
+
+  # ─────────────────────────────────────────────────────────────
+  # Локальный Neo4j (раскомментируй если хочешь запускать БД рядом
+  # с краулером, а не использовать Aura)
+  # ─────────────────────────────────────────────────────────────
+  # neo4j:
+  #   image: neo4j:5
+  #   container_name: moltgraph-neo4j
+  #   ports:
+  #     - "7474:7474"
+  #     - "7687:7687"
+  #   environment:
+  #     - NEO4J_PLUGINS=["graph-data-science"]
+  #     - NEO4J_dbms_security_procedures_unrestricted=gds.*
+  #     - NEO4J_dbms_security_procedures_allowlist=gds.*
+  #     - NEO4J_AUTH=neo4j/please-change-me
+  #     - NEO4J_dbms_memory_pagecache_size=1G
+  #     - NEO4J_dbms_memory_heap_initial__size=1G
+  #     - NEO4J_dbms_memory_heap_max__size=2G
+  #   volumes:
+  #     - neo4j_data:/data
+  #     - neo4j_logs:/logs
+
+# volumes:
+#   neo4j_data:
+#   neo4j_logs:

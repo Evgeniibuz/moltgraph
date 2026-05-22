@@ -1,0 +1,36 @@
+.DS_Store
+*.log
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Env files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+.python-version
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Neo4j dumps (too large for git)
+*.dump
+neo4j_backups/
+
+# Credentials
+credentials.json
+!credentials.json.example
